@@ -139,3 +139,7 @@ func (d *Date) UnmarshalText(data []byte) error {
 func (d Date) String() string {
 	return d.Time().Format(DefaultLayout)
 }
+
+func (d Date) Format(layout string) string {
+	return d.Time().Format(layout)
+}
