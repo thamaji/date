@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-const format = "2006-01-02"
+const DefaultLayout = "2006-01-02"
 
-func Parse(value string) (Date, error) {
-	t, err := time.Parse(format, value)
+func Parse(layout, value string) (Date, error) {
+	t, err := time.Parse(layout, value)
 	if err != nil {
 		return Date{}, err
 	}
@@ -92,9 +92,9 @@ func (d Date) MarshalJSON() ([]byte, error) {
 		return nil, errors.New("Date.MarshalJSON: year outside of range [0,9999]")
 	}
 
-	b := make([]byte, 0, len(format)+2)
+	b := make([]byte, 0, len(DefaultLayout)+2)
 	b = append(b, '"')
-	b = d.time.AppendFormat(b, format)
+	b = d.time.AppendFormat(b, DefaultLayout)
 	b = append(b, '"')
 	return b, nil
 }
@@ -104,7 +104,7 @@ func (d *Date) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	t, err := time.Parse(`"`+format+`"`, string(data))
+	t, err := time.Parse(`"`+DefaultLayout+`"`, string(data))
 	if err != nil {
 		return err
 	}
@@ -120,12 +120,12 @@ func (d Date) MarshalText() ([]byte, error) {
 		return nil, errors.New("Date.MarshalText: year outside of range [0,9999]")
 	}
 
-	b := make([]byte, 0, len(format))
-	return d.time.AppendFormat(b, format), nil
+	b := make([]byte, 0, len(DefaultLayout))
+	return d.time.AppendFormat(b, DefaultLayout), nil
 }
 
 func (d *Date) UnmarshalText(data []byte) error {
-	t, err := time.Parse(format, string(data))
+	t, err := time.Parse(DefaultLayout, string(data))
 	if err != nil {
 		return err
 	}
@@ -137,5 +137,5 @@ func (d *Date) UnmarshalText(data []byte) error {
 }
 
 func (d Date) String() string {
-	return d.Time().Format(format)
+	return d.Time().Format(DefaultLayout)
 }
