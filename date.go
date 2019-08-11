@@ -55,7 +55,11 @@ func (d Date) Equal(date Date) bool {
 
 func (d Date) Time() time.Time {
 	year, month, day := d.time.Date()
-	return time.Date(year, month, day, 0, 0, 0, 0, d.loc)
+	loc := d.loc
+	if loc == nil {
+		loc = time.Local
+	}
+	return time.Date(year, month, day, 0, 0, 0, 0, loc)
 }
 
 func (d Date) TimeInLocation(loc *time.Location) time.Time {
