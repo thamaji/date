@@ -1,3 +1,3 @@
 module github.com/thamaji/date
 
-go 1.16
+go 1.18

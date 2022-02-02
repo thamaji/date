@@ -176,3 +176,24 @@ func (d Date) Format(layout string) string {
 func (d Date) AppendFormat(b []byte, layout string) []byte {
 	return d.Time().AppendFormat(b, layout)
 }
+
+func Range(start, end Date, f func(Date) error) error {
+	for d := start; !end.Before(d); d = d.Add(0, 0, 1) {
+		if err := f(d); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func RangeMap[T any](start, end Date, f func(Date) (T, error)) ([]T, error) {
+	values := make([]T, 0, end.Sub(start)+1)
+	for d := start; !end.Before(d); d = d.Add(0, 0, 1) {
+		v, err := f(d)
+		if err != nil {
+			return nil, err
+		}
+		values = append(values, v)
+	}
+	return values, nil
+}
