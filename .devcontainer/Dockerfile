@@ -32,6 +32,7 @@ RUN set -x \
     && ln -s /home/vscode/.vscode-server/extensions /home/vscode/.vscode-server-insiders/extensions
 
 # golang
+ARG GO_VERSION=1.20.2
 RUN set -x \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -39,7 +40,7 @@ RUN set -x \
         curl \
         git \
     && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* \
-    && curl -fsSL "https://go.dev/dl/go1.18beta2.linux-amd64.tar.gz" | tar -xz -C /usr/local
+    && curl -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" | tar -xz -C /usr/local
 ENV GOROOT=/usr/local/go \
     GOPATH=/home/vscode/go \
     PATH=/home/vscode/go/bin:/usr/local/go/bin:${PATH}

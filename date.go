@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const DefaultLayout = "2006-01-02"
+const DefaultLayout = time.DateOnly
 
 func Parse(layout, value string) (Date, error) {
 	t, err := time.Parse(layout, value)
@@ -59,6 +59,10 @@ func (d Date) Before(date Date) bool {
 
 func (d Date) After(date Date) bool {
 	return d.time.After(date.time)
+}
+
+func (d Date) Compare(date Date) int {
+	return d.time.Compare(date.time)
 }
 
 func (d Date) Equal(date Date) bool {
