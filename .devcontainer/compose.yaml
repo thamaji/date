@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  dev:
+    build:
+      context: .
+      args:
+        UBUNTU_VERSION: 22.04
+        APT_MIRROR: http://jp.archive.ubuntu.com/ubuntu/
+        USERNAME: vscode
+        GO_VERSION: 1.19.13
+      dockerfile: Dockerfile
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - type: bind
+        source: ..
+        target: /workspace
+        consistency: cached
+      - type: bind
+        source: .extensions
+        target: /home/vscode/.vscode-server/extensions
+        consistency: delegated
+      - type: bind
+        source: .bash
+        target: /home/vscode/.cache/bash
+        consistency: delegated
+      - type: bind
+        source: .go
+        target: /home/vscode/go
+        consistency: delegated
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    init: true
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined

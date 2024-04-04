@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const DefaultLayout = time.DateOnly
+const DefaultLayout = "2006-01-02"
 
 func Parse(layout, value string) (Date, error) {
 	t, err := time.Parse(layout, value)
@@ -62,7 +62,13 @@ func (d Date) After(date Date) bool {
 }
 
 func (d Date) Compare(date Date) int {
-	return d.time.Compare(date.time)
+	switch {
+	case d.Before(date):
+		return -1
+	case d.After(date):
+		return +1
+	}
+	return 0
 }
 
 func (d Date) Equal(date Date) bool {
@@ -109,6 +115,21 @@ func (d Date) ISOWeek() (int, int) {
 
 func (d Date) YearDay() int {
 	return d.time.YearDay()
+}
+
+func (d *Date) SetYear(year int) {
+	_, month, day := d.time.Date()
+	d.time = time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+}
+
+func (d *Date) SetMonth(month time.Month) {
+	year, _, day := d.time.Date()
+	d.time = time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+}
+
+func (d *Date) SetDay(day int) {
+	year, month, _ := d.time.Date()
+	d.time = time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
 }
 
 func (d Date) MarshalBinary() ([]byte, error) {
@@ -179,25 +200,4 @@ func (d Date) Format(layout string) string {
 
 func (d Date) AppendFormat(b []byte, layout string) []byte {
 	return d.Time().AppendFormat(b, layout)
-}
-
-func Range(start, end Date, f func(Date) error) error {
-	for d := start; !end.Before(d); d = d.Add(0, 0, 1) {
-		if err := f(d); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func RangeMap[T any](start, end Date, f func(Date) (T, error)) ([]T, error) {
-	values := make([]T, 0, end.Sub(start)+1)
-	for d := start; !end.Before(d); d = d.Add(0, 0, 1) {
-		v, err := f(d)
-		if err != nil {
-			return nil, err
-		}
-		values = append(values, v)
-	}
-	return values, nil
 }

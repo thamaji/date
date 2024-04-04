@@ -1,0 +1,12 @@
+{
+    "useGitignore": true,
+    "ignorePaths": [
+        ".git/objects/**",
+        ".devcontainer/**",
+        ".vscode/**",
+        "go.mod",
+        ".golangci.yaml"
+    ],
+    "words": [
+    ]
+}

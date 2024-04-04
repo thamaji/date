@@ -1,0 +1,51 @@
+run:
+  tests: false
+  skip-dirs:
+    - .devcontainer
+    - .vscode
+    - vendor
+  skip-dirs-use-default: false
+  allow-parallel-runners: true
+linters:
+  enable:
+    - errcheck
+    - errname
+    - errorlint
+    - gofmt
+    - goimports
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - nilerr
+    - nilnil
+    - nonamedreturns
+    - prealloc
+    - reassign
+    - staticcheck
+    - unconvert
+    - unused
+    - usestdlibvars
+    - whitespace
+  fast: false
+linters-settings:
+  errcheck:
+    exclude-functions:
+      - fmt.Fprintf(net/http.ResponseWriter)
+      - fmt.Fprintf(os.Stderr)
+      - fmt.Fprintf(os.Stdout)
+      - fmt.Fprintln(net/http.ResponseWriter)
+      - fmt.Fprintln(os.Stderr)
+      - fmt.Fprintln(os.Stdout)
+      - fmt.Fprint(os.Stdout)
+      - fmt.Fprint(net/http.ResponseWriter)
+      - fmt.Fprint(os.Stderr)
+      - io.Copy(*bytes.Buffer)
+      - io.Copy(net/http.ResponseWriter)
+      - io.Copy(os.Stderr)
+      - io.Copy(os.Stdout)
+      - io.CopyN(*bytes.Buffer)
+      - io.CopyN(net/http.ResponseWriter)
+      - io.CopyN(os.Stderr)
+      - io.CopyN(os.Stdout)
+      - net/http.ResponseWriter.Write
