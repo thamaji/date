@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG UBUNTU_VERSION=22.04
+ARG _DEV_CONTAINERS_BASE_IMAGE=dev_container_auto_added_stage_label
 FROM ubuntu:${UBUNTU_VERSION}
 
 # set apt mirror server
@@ -73,7 +74,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
         zip
 
 # install golang
-ARG GO_VERSION=1.19.13
+ARG GO_VERSION=1.24.0
 RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update \
