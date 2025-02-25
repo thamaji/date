@@ -4,7 +4,8 @@ import (
 	"iter"
 )
 
-// Range は、指定された開始日(start)から終了日(end)までの連続した日付を生成するイテレーターを返します。
+// Range は、指定された開始日(start)から終了日(end)までの連続した日付を生成するイテレータを返します。
+// イテレータには開始日(start)、終了日(end)を含みます。
 // `start` が `end` より前の場合は昇順に、後の場合は降順に日付を生成します。
 func Range(start, end Date) iter.Seq[Date] {
 	return func(yield func(Date) bool) {
@@ -16,7 +17,8 @@ func Range(start, end Date) iter.Seq[Date] {
 	}
 }
 
-// RangeWithIndex は、指定された開始日(start)から終了日(end)までの日付と、そのインデックスを含むイテレーターを返します。
+// RangeWithIndex は、指定された開始日(start)から終了日(end)までの日付と、そのインデックスを含むイテレータを返します。
+// イテレータには開始日(start)、終了日(end)を含みます。
 // `start` が `end` より前の場合は昇順に、後の場合は降順に日付を生成します。
 func RangeWithIndex(start, end Date) iter.Seq2[Date, int] {
 	return func(yield func(Date, int) bool) {
